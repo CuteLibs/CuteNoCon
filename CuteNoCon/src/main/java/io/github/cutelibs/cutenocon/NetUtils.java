@@ -13,6 +13,7 @@ import android.util.Log;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.concurrent.Executors;
 
 public class NetUtils {
 
@@ -26,17 +27,23 @@ public class NetUtils {
 
     // check active connection using http request
     public static boolean isConnectionActive(Context context) {
+
         try {
             HttpURLConnection con = (HttpURLConnection) (new URL("https://www.google.com").openConnection());
             con.setRequestProperty("User-Agent", "Test");
             con.setRequestProperty("Connection", "close");
             con.setConnectTimeout(1500);
             con.connect();
+
+            Log.e("TAG", "isConnectionActive: " + con.getResponseCode());
+
             return con.getResponseCode() == 200;
         } catch (IOException e) {
             e.printStackTrace();
         }
         return false;
+
+
     }
 
     // check for wifi connection

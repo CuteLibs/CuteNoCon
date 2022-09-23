@@ -19,7 +19,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onResume() {
-        CuteNoCon cuteNoCon = new CuteNoCon(this);
         super.onResume();
+        CuteNoCon cuteNoCon = new CuteNoCon(this);
+
     }
 }

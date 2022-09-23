@@ -5,15 +5,20 @@ import static android.view.View.VISIBLE;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.net.wifi.WifiManager;
 import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.FrameLayout;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 import io.github.cutelibs.cutenocon.databinding.CuteNoConMainBinding;
 
-public class CuteNoCon extends Dialog implements ConCallback, WifiCallback, AirplaneCallback {
+public class CuteNoCon extends Dialog implements ConCallback, WifiCallback, AirplaneCallback, WifiOnCallback {
 
     private final Context context;
     private final CuteNoConMainBinding binding;
@@ -22,7 +27,9 @@ public class CuteNoCon extends Dialog implements ConCallback, WifiCallback, Airp
     WifiCallback wifiCallback;
     AirplaneReceiver airplaneReceiver;
     AirplaneCallback airplaneCallback;
-    private ConCallback conCallback;
+    ConCallback conCallback;
+    WifiOnReceiver wifiOnReceiver;
+    WifiOnCallback wifiOnCallback;
 
     public CuteNoCon(Context context) {
         super(context);
@@ -40,54 +47,16 @@ public class CuteNoCon extends Dialog implements ConCallback, WifiCallback, Airp
 
     }
 
-    @Override
-    public void hasConnection(boolean hasConnection) {
-        if (conCallback != null) {
-            conCallback.hasConnection(hasConnection);
-        }
-        if (!hasConnection) {
-            showHideAirplaneMode();
-            show();
-        } else {
-            binding.progressBar.setVisibility(View.GONE);
-            Log.e("TAG", "hasConnection: dismissed");
-            new Handler().postDelayed(this::dismiss, 500);
-        }
-
-    }
-
-    @Override
-    public void hasWifiConnection(boolean isConnected) {
-        if (wifiCallback != null) {
-            wifiCallback.hasWifiConnection(isConnected);
-        }
-        if (isConnected) {
-            binding.progressBar.setVisibility(View.GONE);
-        }
-
-    }
 
     private void setUpClicks() {
 
         binding.airplaneButton.setOnClickListener(v -> {
-
             NetUtils.turnOffAirplaneMode(context);
-            binding.progressBar.setVisibility(VISIBLE);
-
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    showHideAirplaneMode();
-                    binding.progressBar.setVisibility(View.GONE);
-                }
-            }, 500);
-
         });
 
         binding.wifiButton.setOnClickListener(v -> {
             if (!NetUtils.isWifiConnected(context)) {
                 NetUtils.turnOnWifi(context);
-                binding.progressBar.setVisibility(VISIBLE);
             }
 
         });
@@ -115,19 +84,18 @@ public class CuteNoCon extends Dialog implements ConCallback, WifiCallback, Airp
         context.registerReceiver(airplaneReceiver, new android.content.IntentFilter(Intent.ACTION_AIRPLANE_MODE_CHANGED));
         airplaneReceiver.setAirplaneCallback(this);
 
+        wifiOnReceiver = new WifiOnReceiver();
+        context.registerReceiver(wifiOnReceiver, new android.content.IntentFilter(WifiManager.WIFI_STATE_CHANGED_ACTION));
+        wifiOnReceiver.setConnectionCallback(this);
+
     }
 
     private void initUI() {
-
         getWindow().setGravity(android.view.Gravity.CENTER);
         setCancelable(false);
 
-
     }
 
-    public void setConnectionCallback(ConCallback conCallback) {
-        this.conCallback = conCallback;
-    }
 
     private void showHideAirplaneMode() {
         if (NetUtils.isAirplaneModeOn(context)) {
@@ -139,6 +107,36 @@ public class CuteNoCon extends Dialog implements ConCallback, WifiCallback, Airp
         }
     }
 
+    @Override
+    public void hasConnection(boolean hasConnection) {
+        if (conCallback != null) {
+            conCallback.hasConnection(hasConnection);
+        }
+        if (!hasConnection) {
+            showHideAirplaneMode();
+            binding.progressBar.setVisibility(View.GONE);
+            show();
+        } else {
+            binding.progressBar.setVisibility(View.GONE);
+            dismissDialog();
+        }
+
+    }
+
+
+    private void dismissDialog() {
+
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        Handler handler = new Handler(Looper.getMainLooper());
+        executor.execute(() -> {
+            if (NetUtils.isConnectionActive(context)) {
+                handler.post(this::dismiss);
+            }
+
+        });
+
+    }
+
 
     @Override
     public void hasAirplaneMode(boolean hasAirplaneMode) {
@@ -148,9 +146,38 @@ public class CuteNoCon extends Dialog implements ConCallback, WifiCallback, Airp
         if (hasAirplaneMode) {
             binding.airplaneLayout.setVisibility(VISIBLE);
             binding.dataWifiLayout.setVisibility(android.view.View.GONE);
+            binding.progressBar.setVisibility(View.GONE);
+
         } else {
             binding.airplaneLayout.setVisibility(android.view.View.GONE);
             binding.dataWifiLayout.setVisibility(VISIBLE);
+            binding.progressBar.setVisibility(View.GONE);
+
+        }
+
+    }
+
+    @Override
+    public void hasWifiConnection(boolean isConnected) {
+        if (wifiCallback != null) {
+            wifiCallback.hasWifiConnection(isConnected);
+        }
+        if (isConnected) {
+            binding.progressBar.setVisibility(View.GONE);
+        }
+
+    }
+
+
+    @Override
+    public void tunedOn(boolean tunedOn) {
+        if (wifiOnCallback != null) {
+            wifiOnCallback.tunedOn(tunedOn);
+        }
+        if (tunedOn) {
+            binding.progressBar.setVisibility(VISIBLE);
+        } else {
+            binding.progressBar.setVisibility(View.GONE);
         }
 
     }
