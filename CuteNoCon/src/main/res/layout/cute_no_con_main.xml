@@ -1,6 +1,275 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:theme="@style/Theme.MaterialComponents.Light">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/whole_card"
+        android:layout_width="320dp"
+        android:layout_height="400dp"
+        android:layout_centerInParent="true"
+        app:cardBackgroundColor="@color/cute_no_con_main"
+        app:cardCornerRadius="10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="180dp">
+
+                <ImageView
+                    android:id="@+id/close_icon"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_gravity="end"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginEnd="15dp"
+                    android:layout_marginBottom="15dp"
+                    android:src="@drawable/cute_no_con_close_icon"
+                    android:visibility="visible"
+                    tools:ignore="ContentDescription" />
+
+
+                <com.airbnb.lottie.LottieAnimationView
+                    android:id="@+id/main_animation"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerInParent="true"
+                    android:visibility="visible"
+                    app:lottie_autoPlay="true"
+                    app:lottie_loop="true"
+                    app:lottie_rawRes="@raw/anim1" />
+
+                <ProgressBar
+                    android:visibility="gone"
+                    android:id="@+id/progressBar"
+                    style="?android:attr/progressBarStyle"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="end"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginEnd="15dp"
+                    android:layout_marginBottom="15dp"
+                    android:indeterminateTint="#fff"
+                    android:layout_alignParentStart="true"/>
+
+
+            </RelativeLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical">
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="5dp"
+                    android:fontFamily="sans-serif"
+                    android:text="No Internet"
+                    android:textAllCaps="true"
+                    android:textColor="@color/white"
+                    android:textSize="22sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:fontFamily="sans-serif"
+                    android:gravity="center"
+                    android:paddingStart="30dp"
+                    android:paddingEnd="30dp"
+                    android:text="You're not connected to the internet!"
+                    android:textColor="#eee"
+                    android:textSize="16sp" />
+
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/data_wifi_layout"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_above="@id/control_layout"
+                    android:layout_marginBottom="10dp"
+                    android:fontFamily="sans-serif"
+                    android:gravity="center"
+                    android:textStyle="bold"
+                    android:text="Please Turn ON"
+                    android:textColor="@color/white"
+                    android:textSize="18sp" />
+
+                <LinearLayout
+                    android:id="@+id/control_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="10dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/wifi_button"
+                        android:layout_width="140dp"
+                        android:layout_height="40dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        app:cardElevation="3dp"
+                        app:cardBackgroundColor="#03A9F4"
+                        app:cardCornerRadius="20dp">
+
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:drawableTint="@color/white"
+                            android:drawableStart="@drawable/wifi_on"
+                            android:fontFamily="sans-serif"
+                            android:textColor="@color/white"
+                            android:gravity="center"
+                            android:paddingStart="10dp"
+                            android:paddingEnd="10dp"
+                            android:text="WIFI" />
+
+
+                    </com.google.android.material.card.MaterialCardView>
+
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/data_button"
+                        android:layout_width="140dp"
+                        android:layout_height="40dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="5dp"
+                        app:cardElevation="3dp"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginEnd="10dp"
+                        app:cardBackgroundColor="#03A9F4"
+                        app:cardCornerRadius="20dp">
+
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:textColor="@color/white"
+                            android:layout_gravity="center"
+                            android:drawableTint="@color/white"
+                            android:drawableStart="@drawable/mobile_on"
+                            android:fontFamily="sans-serif"
+                            android:gravity="center"
+                            android:paddingStart="10dp"
+                            android:paddingEnd="10dp"
+                            android:text="Mobile Data"
+                            android:textSize="14sp" />
+
+
+                    </com.google.android.material.card.MaterialCardView>
+
+
+                </LinearLayout>
+
+
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/airplane_layout"
+                android:visibility="visible"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_above="@id/control_layout2"
+                    android:layout_marginBottom="10dp"
+                    android:fontFamily="sans-serif"
+                    android:gravity="center"
+                    android:textStyle="bold"
+                    android:text="Please Turn OFF"
+                    android:textColor="@color/white"
+                    android:textSize="18sp" />
+
+                <LinearLayout
+                    android:id="@+id/control_layout2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="10dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/airplane_button"
+                        android:layout_width="200dp"
+                        android:layout_height="40dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginTop="5dp"
+                        app:cardElevation="3dp"
+                        android:layout_marginBottom="5dp"
+                        app:cardBackgroundColor="#03A9F4"
+                        app:cardCornerRadius="20dp">
+
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:textColor="@color/white"
+                            android:layout_gravity="center"
+                            android:drawableTint="@color/white"
+                            android:drawableStart="@drawable/airplane_on"
+                            android:fontFamily="sans-serif"
+                            android:gravity="center"
+                            android:paddingStart="15dp"
+                            android:paddingEnd="15dp"
+                            android:text="Airplane Mode"
+                            android:textSize="14sp" />
+
+
+                    </com.google.android.material.card.MaterialCardView>
+
+
+                </LinearLayout>
+
+
+            </RelativeLayout>
+
+
+
+        </LinearLayout>
+
+
+    </com.google.android.material.card.MaterialCardView>
+
+
+</RelativeLayout>
