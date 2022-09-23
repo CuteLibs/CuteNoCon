@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.net.wifi.WifiManager;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.FrameLayout;
@@ -50,9 +49,7 @@ public class CuteNoCon extends Dialog implements ConCallback, WifiCallback, Airp
 
     private void setUpClicks() {
 
-        binding.airplaneButton.setOnClickListener(v -> {
-            NetUtils.turnOffAirplaneMode(context);
-        });
+        binding.airplaneButton.setOnClickListener(v -> NetUtils.turnOffAirplaneMode(context));
 
         binding.wifiButton.setOnClickListener(v -> {
             if (!NetUtils.isWifiConnected(context)) {
@@ -129,7 +126,7 @@ public class CuteNoCon extends Dialog implements ConCallback, WifiCallback, Airp
         ExecutorService executor = Executors.newSingleThreadExecutor();
         Handler handler = new Handler(Looper.getMainLooper());
         executor.execute(() -> {
-            if (NetUtils.isConnectionActive(context)) {
+            if (NetUtils.isConnectionActive()) {
                 handler.post(this::dismiss);
             }
 

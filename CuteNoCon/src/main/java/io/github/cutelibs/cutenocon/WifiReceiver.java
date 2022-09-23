@@ -19,7 +19,7 @@ public class WifiReceiver extends BroadcastReceiver {
             if (callback != null) {
                 callback.hasWifiConnection(true);
             }
-        }  else {
+        } else {
             if (callback != null) {
                 callback.hasWifiConnection(false);
             }

@@ -6,27 +6,19 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.wifi.WifiManager;
 import android.provider.Settings;
 import android.util.Log;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.concurrent.Executors;
 
 public class NetUtils {
 
 
-    // check for connection
-    public static boolean isConnected(Context context) {
-        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo netInfo = cm.getActiveNetworkInfo();
-        return netInfo != null && netInfo.isConnectedOrConnecting();
-    }
 
     // check active connection using http request
-    public static boolean isConnectionActive(Context context) {
+    public static boolean isConnectionActive() {
 
         try {
             HttpURLConnection con = (HttpURLConnection) (new URL("https://www.google.com").openConnection());
